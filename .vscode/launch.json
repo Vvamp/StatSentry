@@ -5,7 +5,7 @@
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/build/MyTaskManager",
+            "program": "${workspaceFolder}/build/StatSentry",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",

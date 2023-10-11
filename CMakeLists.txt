@@ -1,6 +1,6 @@
 # Set minimum CMake version and project name
 cmake_minimum_required(VERSION 3.10)
-project(OpenTasks)
+project(StatSentry)
 
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 17)
@@ -34,7 +34,7 @@ set(IMGUI_SOURCES
 )
 
 # Source files for your project
-set(MYTASKMANAGER_SOURCES
+set(STATSENTRY_SOURCES
     src/main.cpp
     src/ComputerInfo/ComputerInfo.cpp
     src/ComputerInfo/CpuInfo.cpp
@@ -46,11 +46,11 @@ set(MYTASKMANAGER_SOURCES
 )
 
 # Create executable
-add_executable(MyTaskManager ${MYTASKMANAGER_SOURCES} ${IMGUI_SOURCES})
+add_executable(StatSentry ${STATSENTRY_SOURCES} ${IMGUI_SOURCES})
 
 # Find and link SDL2 and GLEW
 find_package(SDL2 REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(Boost REQUIRED)
-target_link_libraries(MyTaskManager PRIVATE ${SDL2_LIBRARIES} ${GLEW_LIBRARIES} ${OPENGL_LIBRARIES} ${Boost_LIBRARIES})
+target_link_libraries(StatSentry PRIVATE ${SDL2_LIBRARIES} ${GLEW_LIBRARIES} ${OPENGL_LIBRARIES} ${Boost_LIBRARIES})
