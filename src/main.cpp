@@ -26,8 +26,8 @@ int main(int, char **)
 
     // Initialize Data
     auto data = ComputerInfo();
-    const Uint32 frameDelay = 100;    // 100 ms delay
-    const int frameRefreshCount = 10; // how many frames to wait before refreshing data
+    const Uint32 frameDelay = 10;    // 100 ms delay
+    const int frameRefreshCount = 100; // how many frames to wait before refreshing data
     Uint32 frameStart;
     Uint32 frameTime;
     // Initialize SDL
@@ -83,16 +83,31 @@ int main(int, char **)
         // Start ImGui Frame
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplSDL2_NewFrame(window);
+
         ImGui::NewFrame();
+
+        // Button Panel
+        int buttonPanelHeight = 200;
         ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiCond_Always);
-        ImGui::SetNextWindowSize(ImVec2(width, height / 2), ImGuiCond_Always);
-        // Create a window called "My First Tool", with a menu bar.
+        ImGui::SetNextWindowSize(ImVec2(width, buttonPanelHeight), ImGuiCond_Always);
+        ImGui::Begin("Buttons", &run, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+        if (ImGui::Button("CPU")) // Buttons return true when clicked (most widgets return true when edited/activated)
+            std::cout << "CPU pressed\n";
+        if (ImGui::Button("Memory")) // Buttons return true when clicked (most widgets return true when edited/activated)
+            std::cout << "Memory pressed\n";
+        if (ImGui::Button("Disk")) // Buttons return true when clicked (most widgets return true when edited/activated)
+            std::cout << "Disk pressed\n";
+        ImGui::End();
+
+        
+        ImGui::SetNextWindowPos(ImVec2(0, buttonPanelHeight), ImGuiCond_Always);
+        ImGui::SetNextWindowSize(ImVec2(width/2, height-buttonPanelHeight), ImGuiCond_Always);
         GuiDraw::RenderCpuInfo(data.CPU, &run);
 
-        ImGui::SetNextWindowPos(ImVec2(0, height / 2), ImGuiCond_Always);
-        ImGui::SetNextWindowSize(ImVec2(width, height / 2), ImGuiCond_Always);
+        ImGui::SetNextWindowPos(ImVec2(width/2, buttonPanelHeight), ImGuiCond_Always);
+        ImGui::SetNextWindowSize(ImVec2(width/2, height-buttonPanelHeight), ImGuiCond_Always);
         GuiDraw::RenderMemoryInfo(data.Memory, &run);
-       
+
         // Rendering
         ImGui::Render();
         SDL_GL_MakeCurrent(window, gl_context);
