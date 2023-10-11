@@ -18,6 +18,9 @@ set(CMAKE_BUILD_TYPE Debug)
 # Include directories
 include_directories(include/)
 include_directories(include/imgui)
+include_directories(include/TaskManager/Util)
+include_directories(include/TaskManager/Gui/Modules)
+include_directories(include/TaskManager/ComputerInfo)
 
 # Source files for ImGui
 set(IMGUI_SOURCES
@@ -33,6 +36,12 @@ set(IMGUI_SOURCES
 # Source files for your project
 set(MYTASKMANAGER_SOURCES
     src/main.cpp
+    src/ComputerInfo/ComputerInfo.cpp
+    src/ComputerInfo/CpuInfo.cpp
+    src/ComputerInfo/MemInfo.cpp
+    src/Gui/Modules/CPU.cpp
+    src/Gui/Modules/Memory.cpp
+    src/Util/Util.cpp
     # Add other source files
 )
 
