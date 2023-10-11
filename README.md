@@ -1,0 +1,3 @@
+Need:
+- Glew
+- SDL2
