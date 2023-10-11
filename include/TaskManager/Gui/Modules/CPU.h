@@ -5,7 +5,8 @@
 #include <imgui_impl_opengl3.h>
 #include <string>
 #include "CpuInfo.h"
+#include <boost/circular_buffer.hpp>
 
 namespace GuiDraw{
-    void RenderCpuInfo(CpuInfo & cpuInfo, bool* keepOpen);
+    void RenderCpuInfo(CpuInfo & cpuInfo, bool* keepOpen, bool registerValue = false);
 };

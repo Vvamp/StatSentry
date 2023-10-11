@@ -102,7 +102,7 @@ int main(int, char **)
         
         ImGui::SetNextWindowPos(ImVec2(0, buttonPanelHeight), ImGuiCond_Always);
         ImGui::SetNextWindowSize(ImVec2(width/2, height-buttonPanelHeight), ImGuiCond_Always);
-        GuiDraw::RenderCpuInfo(data.CPU, &run);
+        GuiDraw::RenderCpuInfo(data.CPU, &run, (frameCount == 0));
 
         ImGui::SetNextWindowPos(ImVec2(width/2, buttonPanelHeight), ImGuiCond_Always);
         ImGui::SetNextWindowSize(ImVec2(width/2, height-buttonPanelHeight), ImGuiCond_Always);

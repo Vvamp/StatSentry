@@ -65,7 +65,8 @@
         "thread": "cpp",
         "cinttypes": "cpp",
         "typeinfo": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "source_location": "cpp"
     },
     "cmake.configureSettings": {
         "CMAKE_BUILD_TYPE": "Debug",
