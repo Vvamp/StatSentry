@@ -17,17 +17,25 @@
 #include "ComputerInfo.h"
 #include "CPU.h"
 #include "Memory.h"
+#include "Settings.h"
 
 using std::ifstream;
 using std::string;
+
+enum class TaskPage
+{
+    CPU,
+    Memory
+};
 
 int main(int, char **)
 {
 
     // Initialize Data
     auto data = ComputerInfo();
-    const Uint32 frameDelay = 10;    // 100 ms delay
-    const int frameRefreshCount = 100; // how many frames to wait before refreshing data
+    auto cpuGui = GuiDraw::Cpu(data.CPU);
+    auto memGui = GuiDraw::Memory(data.Memory);
+
     Uint32 frameStart;
     Uint32 frameTime;
     // Initialize SDL
@@ -61,15 +69,16 @@ int main(int, char **)
     int width, height;
     // Main loop
     bool run = true;
-    int frameCount = 0;
+    int framesSinceLastPoll = 0;
+    TaskPage task = TaskPage::CPU;
     while (run)
     {
         frameStart = SDL_GetTicks();                // Get ticks before rendering and logic
         SDL_GetWindowSize(window, &width, &height); // Get SDL window size
-        if (frameCount > frameRefreshCount)
+        if (framesSinceLastPoll > Settings::PollFrequencyFrameCount)
         {
             data.Refresh();
-            frameCount = 0;
+            framesSinceLastPoll = 0;
         }
         // Poll events
         SDL_Event event;
@@ -92,21 +101,32 @@ int main(int, char **)
         ImGui::SetNextWindowSize(ImVec2(width, buttonPanelHeight), ImGuiCond_Always);
         ImGui::Begin("Buttons", &run, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
         if (ImGui::Button("CPU")) // Buttons return true when clicked (most widgets return true when edited/activated)
-            std::cout << "CPU pressed\n";
+            task = TaskPage::CPU;
+        ImGui::SameLine();
         if (ImGui::Button("Memory")) // Buttons return true when clicked (most widgets return true when edited/activated)
-            std::cout << "Memory pressed\n";
+            task = TaskPage::Memory;
+        ImGui::SameLine();
         if (ImGui::Button("Disk")) // Buttons return true when clicked (most widgets return true when edited/activated)
             std::cout << "Disk pressed\n";
         ImGui::End();
 
-        
-        ImGui::SetNextWindowPos(ImVec2(0, buttonPanelHeight), ImGuiCond_Always);
-        ImGui::SetNextWindowSize(ImVec2(width/2, height-buttonPanelHeight), ImGuiCond_Always);
-        GuiDraw::RenderCpuInfo(data.CPU, &run, (frameCount == 0));
-
-        ImGui::SetNextWindowPos(ImVec2(width/2, buttonPanelHeight), ImGuiCond_Always);
-        ImGui::SetNextWindowSize(ImVec2(width/2, height-buttonPanelHeight), ImGuiCond_Always);
-        GuiDraw::RenderMemoryInfo(data.Memory, &run);
+        switch (task)
+        {
+        case TaskPage::CPU:
+        {
+            ImGui::SetNextWindowPos(ImVec2(0, buttonPanelHeight), ImGuiCond_Always);
+            ImGui::SetNextWindowSize(ImVec2(width, height - buttonPanelHeight), ImGuiCond_Always);
+            cpuGui.RenderCpuInfo(&run, (framesSinceLastPoll == 0));
+            break;
+        }
+        case TaskPage::Memory:
+        {
+            ImGui::SetNextWindowPos(ImVec2(0, buttonPanelHeight), ImGuiCond_Always);
+            ImGui::SetNextWindowSize(ImVec2(width, height - buttonPanelHeight), ImGuiCond_Always);
+            memGui.RenderMemoryInfo(&run);
+            break;
+        }
+        }
 
         // Rendering
         ImGui::Render();
@@ -116,13 +136,13 @@ int main(int, char **)
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         SDL_GL_SwapWindow(window);
 
-        // pause render until 'frameDelay' ticks have passed
+        // pause render until 'Settings::FrameTime_Ms' ticks have passed
         frameTime = SDL_GetTicks() - frameStart; // Calculate the time taken for one loop
-        if (frameDelay > frameTime)              // If the loop finished before the desired delay
+        if (Settings::FrameTime_Ms > frameTime)  // If the loop finished before the desired delay
         {
-            SDL_Delay(frameDelay - frameTime); // Delay the loop to achieve the desired frame time
+            SDL_Delay(Settings::FrameTime_Ms - frameTime); // Delay the loop to achieve the desired frame time
         }
-        frameCount++;
+        framesSinceLastPoll++;
     }
 
     // Cleanup

@@ -1,6 +1,6 @@
 #include "Memory.h"
 
-void GuiDraw::RenderMemoryInfo(MemInfo &memInfo, bool *keepOpen)
+void GuiDraw::Memory::RenderMemoryInfo(bool *keepOpen)
 {
     ImGui::Begin("Memory", keepOpen, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
     ImGui::TextColored(ImVec4(1, 1, 0, 1), "Memory Information");
