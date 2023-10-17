@@ -14,20 +14,14 @@ namespace GuiDraw
     class Memory
     {
     public:
-        Memory(MemInfo &memInfo) : memInfo(memInfo)
-        {
-            buffer = &boost::circular_buffer<float>();
-        }
+        Memory(MemInfo &memInfo) : memInfo(memInfo), buffer(100)
+        {}
+
         void RenderMemoryInfo(bool *keepOpen, bool registerValue);
         void RenderMemoryGraph(float text_y, float text_x, float graph_x, bool registerValue);
-
-        ~Memory()
-        {
-            buffer = nullptr;
-        }
-
+        
     private:
         MemInfo &memInfo;
-        boost::circular_buffer<float> *buffer;
+        boost::circular_buffer<float> buffer;
     };
 };

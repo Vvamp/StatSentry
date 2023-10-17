@@ -20,7 +20,7 @@ void GuiDraw::Memory::RenderMemoryGraph(float text_y, float text_x, float graph_
     ImGui::SetCursorPosX(text_x);
 
     // Convert the circular buffer to a vector for contiguous storage
-    std::vector<float> values(buffer->begin(), buffer->end());
+    std::vector<float> values(buffer.begin(), buffer.end());
 
     // Move cursor to the calculated X position
     ImGui::SetCursorPosX(graph_x);
@@ -39,11 +39,11 @@ void GuiDraw::Memory::RenderMemoryInfo(bool *keepOpen, bool registerValue)
     const float padding = 5.0F;
 
     // Fill the entire ring buffer with zeroes, so that the graph won't resize
-    if (buffer->size() == 0)
+    if (buffer.size() == 0)
     {
         for (size_t i = 0; i < Settings::CpuBufferGraphSize; i++)
         {
-            buffer->push_back(0);
+            buffer.push_back(0);
         }
     }
 
@@ -62,7 +62,7 @@ void GuiDraw::Memory::RenderMemoryInfo(bool *keepOpen, bool registerValue)
 
     if (registerValue)
     {
-        buffer->push_back(memInfo.GetAvailable(Utility::SizeType::kb));
+        buffer.push_back(memInfo.GetAvailable(Utility::SizeType::kb));
     }
 
     auto cursor_x = padding; // Grab cursor default position at the left of screen
