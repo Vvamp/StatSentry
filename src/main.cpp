@@ -123,7 +123,7 @@ int main(int, char **)
         {
             ImGui::SetNextWindowPos(ImVec2(0, buttonPanelHeight), ImGuiCond_Always);
             ImGui::SetNextWindowSize(ImVec2(width, height - buttonPanelHeight), ImGuiCond_Always);
-            memGui.RenderMemoryInfo(&run);
+            memGui.RenderMemoryInfo(&run, (framesSinceLastPoll == 0));
             break;
         }
         }
